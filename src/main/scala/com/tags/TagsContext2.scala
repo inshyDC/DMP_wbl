@@ -20,7 +20,7 @@ object TagsContext2 {
 
   def main(args: Array[String]): Unit = {
 
-    System.setProperty("hadoop.home.dir", "D:\\Huohu\\下载\\hadoop-common-2.2.0-bin-master")
+    //System.setProperty("hadoop.home.dir", "D:\\Huohu\\下载\\hadoop-common-2.2.0-bin-master")
     if(args.length!=4){
       println("目录不正确")
       sys.exit()
@@ -32,7 +32,7 @@ object TagsContext2 {
     val spark = SparkSession.builder().appName("Tags").master("local").getOrCreate()
     import spark.implicits._
 
-    // 调用HbaseAPI
+    /*// 调用HbaseAPI
     val load = ConfigFactory.load()
     // 获取表名
     val HbaseTableName = load.getString("HBASE.tableName")
@@ -60,7 +60,7 @@ object TagsContext2 {
     // 指定输出类型
     conf.setOutputFormat(classOf[TableOutputFormat])
     // 指定输出哪张表
-    conf.set(TableOutputFormat.OUTPUT_TABLE,HbaseTableName)
+    conf.set(TableOutputFormat.OUTPUT_TABLE,HbaseTableName)*/
 
     // 读取数据文件
     val df = spark.read.parquet(inputPath)
@@ -113,7 +113,7 @@ object TagsContext2 {
       })
     })
     // 打印
-    //verties.take(20).foreach(println)
+    verties.take(20).foreach(println)
     // 构建边的集合
     val edges = allUserId.flatMap(row=>{
       // A B C: A->B  A ->C
@@ -143,7 +143,8 @@ object TagsContext2 {
         put.addImmutable(Bytes.toBytes("tags"),Bytes.toBytes(day),Bytes.toBytes(userTags.mkString(",")))
         (new ImmutableBytesWritable(),put)
       }
-    }.saveAsHadoopDataset(conf)
+    }
+      //.saveAsHadoopDataset(conf)
 
     spark.stop()
   }

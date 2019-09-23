@@ -17,6 +17,7 @@ object TagsAPP extends Tag {
 
     val spark = SparkSession.builder().getOrCreate()
 
+
     //读取数据字典
     val docMap: collection.Map[String, String] = spark.sparkContext.textFile("")
       .map(_.split("\\s", -1))
@@ -41,16 +42,14 @@ object TagsAPP extends Tag {
 
 
 
-    /*
-    //获取广告位类型和名称
+    /*//获取广告位类型和名称
     val appName = row.getAs[String]("appname")
     //广告位类型标签
     appName match {
       case _ => list :+= ("APP"+appName,1)
-    }
-    */
+    }*/
 
-    list
+   list
 
   }
 
