@@ -49,6 +49,13 @@ object BusinessTag extends Tag{
     val business = df.toString()
     spark.close()
     business
+
+    /*val jedis = JedisConnectionPool.getConnection()
+    val business = jedis.get(geohash)
+    jedis.close()
+    business*/
+
+
   }
 
   def redis_insertBusiness(geohash: String, business: String) = {
@@ -65,8 +72,14 @@ object BusinessTag extends Tag{
 
     ToSqlPro.writeSqlTable(res.toDF(),"geohash_business")
     spark.close()
-  }
 
+
+    /*val jedis = JedisConnectionPool.getConnection()
+    jedis.set(geohash,business)
+    jedis.close()*/
+
+
+  }
 
   //获取商圈的信息
   def getBusiness(long: Double, lat: Double):String={
@@ -80,9 +93,11 @@ object BusinessTag extends Tag{
       //去高德请求
       val business = AmapUtil.getBusinessFromAmap(long,lat)
       //将获取的商圈存储到数据库中
-      //if(business != null && business.length > 0){
-        //redis_insertBusiness(geohash,business)
-      //}
+        /*
+        if(business != null && business.length > 0){
+          redis_insertBusiness(geohash,business)
+        }
+        */
     //}
     business
   }

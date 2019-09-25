@@ -1,6 +1,6 @@
 package graph
 
-import org.apache.spark.graphx.{Edge, Graph}
+import org.apache.spark.graphx._
 import org.apache.spark.sql.SparkSession
 
 /**
@@ -45,14 +45,23 @@ object GraphTest {
 
     //构建图
     val graph = Graph(vertexRDD,edgeRDD)
-    //取顶点
-    val vertices = graph.connectedComponents().vertices
 
-    vertices.join(vertexRDD).map{
+    //取顶点视图
+    val vertices: VertexRDD[VertexId] = graph.connectedComponents().vertices
+
+    //取边缘视图
+    val edges: EdgeRDD[PartitionID] = graph.connectedComponents().edges
+
+    vertices.foreach(println)
+    //edges.foreach(println)
+
+    vertices.join(vertexRDD).foreach(println)
+
+      /*.map{
       case (userId,(cnId,(name,age)))=>(cnId,List((name,age)))
     }
       .reduceByKey(_++_)
-      .foreach(println)
-
+      //.foreach(println)
+*/
   }
 }

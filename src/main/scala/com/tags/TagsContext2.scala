@@ -113,7 +113,7 @@ object TagsContext2 {
       })
     })
     // 打印
-    verties.take(20).foreach(println)
+    //verties.take(20).foreach(println)
     // 构建边的集合
     val edges = allUserId.flatMap(row=>{
       // A B C: A->B  A ->C
@@ -136,14 +136,16 @@ object TagsContext2 {
           .groupBy(_._1)
           .mapValues(_.map(_._2).sum)
           .toList
-      }).map{
+      }).foreach(println)
+
+      /*.map{
       case (userId,userTags) =>{
         // 设置rowkey和列、列名
         val put = new Put(Bytes.toBytes(userId))
         put.addImmutable(Bytes.toBytes("tags"),Bytes.toBytes(day),Bytes.toBytes(userTags.mkString(",")))
         (new ImmutableBytesWritable(),put)
       }
-    }
+    }*/
       //.saveAsHadoopDataset(conf)
 
     spark.stop()
